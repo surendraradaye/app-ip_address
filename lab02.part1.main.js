@@ -11,7 +11,7 @@ const IPCIDR = require('ip-cidr');
  * @param {string} cidrStr - The IPv4 subnet expressed
  *                 in CIDR format.
  * @param {callback} callback - A callback function.
- * @return {string} (firstIpAddress) - Array of IPv4,IPv6 address.
+ * @return {string} (firstIpAddress) - An IPv4 address.
  */
 function getFirstIpAddress(cidrStr, callback) {
 
@@ -36,13 +36,7 @@ function getFirstIpAddress(cidrStr, callback) {
   } else {
     // If the passed CIDR is valid, call the object's toArray() method.
     // Notice the destructering assignment syntax to get the value of the first array's element.
-    //[firstIpAddress] = cidr.toArray(options);
-    console.log(`\n--- Inside getFirstIpAddress(${cidr.toArray(options)}) ---`);
-    let ipv4First = cidr.toArray(options).toString();
-    console.log(`\n--- Inside getFirstIpAddress::ipv4First(${ipv4First}) ---`);
-    let mappedAddress = getIpv4MappedIpv6Address(ipv4First);
-    console.log(`\n--- Inside getFirstIpAddress::MappedAddress (${mappedAddress}) ---`);
-    [firstIpAddress] = [ipv4First,mappedAddress];
+    [firstIpAddress] = cidr.toArray(options);
   }
   // Call the passed callback function.
   // Node.js convention is to pass error data as the first argument to a callback.
@@ -65,7 +59,6 @@ function main() {
   let sampleIpv4sLen = sampleIpv4s.length;
 
   // Iterate over sampleCidrs and pass the element's value to getFirstIpAddress().
-  
   for (let i = 0; i < sampleCidrsLen; i++) {
     console.log(`\n--- Test Number ${i + 1} getFirstIpAddress(${sampleCidrs[i]}) ---`);
     // Call getFirstIpAddress and pass the test subnet and an anonymous callback function.
@@ -79,7 +72,6 @@ function main() {
       console.log(`  Response returned from GET request: ${data}`);
     });
   }
-  
   // Iterate over sampleIpv4s and pass the element's value to getIpv4MappedIpv6Address().
   for (let i = 0; i < sampleIpv4sLen; i++) {
     console.log(`\n--- Test Number ${i + 1} getIpv4MappedIpv6Address(${sampleIpv4s[i]}) ---`);
@@ -105,7 +97,6 @@ function getIpv4MappedIpv6Address(ipv4) {
 
   // Prepare to derive a Hex version of the dotted-quad decimal IPv4 address.
   // Split the IPv4 address into its four parts.
-      console.log(`\n--- Inside getIpv4MappedIpv6Address(${ipv4}) ---`);
   let ipv4Quads = ipv4.split('.');
   // Count the number of parts found.
   let numIpv4Segments = ipv4Quads.length;
